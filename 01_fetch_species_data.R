@@ -61,3 +61,21 @@ message(paste("Final clipped terrestrial records:", nrow(species_sf)))
 output_file <- "pleurodeles_waltl_points.gpkg"
 st_write(species_sf, output_file, append = FALSE, quiet = TRUE)
 message(paste("Spatial layer saved locally as:", output_file))
+
+# 7. Diagnostic Visualization
+world_map <- ne_countries(scale = "medium", returnclass = "sf")
+
+ggplot() +
+  geom_sf(data = world_map, fill = "#f2f2ef", color = "#b8b8b8") +
+  geom_sf(data = species_sf, color = "#1b9e77", alpha = 0.6, size = 1.3) +
+  coord_sf(
+    xlim = c(IBERIA_BBOX["lon_min"], IBERIA_BBOX["lon_max"]),
+    ylim = c(IBERIA_BBOX["lat_min"], IBERIA_BBOX["lat_max"]),
+    expand = FALSE
+  ) +
+  theme_minimal() +
+  labs(
+    title = expression(paste("Terrestrial Occurrences of ", italic("Pleurodeles waltl"))),
+    subtitle = paste("Source: GBIF API | Clipped Points:", nrow(species_sf)),
+    x = "Longitude", y = "Latitude"
+  )
