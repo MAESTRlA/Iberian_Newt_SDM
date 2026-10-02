@@ -57,3 +57,7 @@ iberia_poly <- ne_countries(
 species_sf <- st_intersection(species_sf_raw, iberia_poly)
 message(paste("Final clipped terrestrial records:", nrow(species_sf)))
 
+# 6. Save Clean Spatial Output (.gpkg)
+output_file <- "pleurodeles_waltl_points.gpkg"
+st_write(species_sf, output_file, append = FALSE, quiet = TRUE)
+message(paste("Spatial layer saved locally as:", output_file))
